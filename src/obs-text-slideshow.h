@@ -58,6 +58,7 @@ using std::vector;
 #define TR_FADE "fade"
 #define TR_SWIPE "swipe"
 #define TR_SLIDE "slide"
+#define TR_SLIDE_TB "slide_tb"
 
 #define T_SS_(text) obs_module_text("SlideShow." text)
 #define T_TR_SPEED T_SS_("TransitionSpeed")
@@ -91,6 +92,7 @@ using std::vector;
 #define T_TR_FADE T_TR_("Fade")
 #define T_TR_SWIPE T_TR_("Swipe")
 #define T_TR_SLIDE T_TR_("Slide")
+#define T_TR_SLIDE_TB T_TR_("SlideTopBottom")
 
 #define set_vis(val, show)                          \
 	do {                                        \

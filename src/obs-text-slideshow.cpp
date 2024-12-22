@@ -438,6 +438,8 @@ void text_ss_update(void *data, obs_data_t *settings,
 		tr_name = "swipe_transition";
 	else if (astrcmpi(tr_name, TR_SLIDE) == 0)
 		tr_name = "slide_transition";
+	else if (astrcmpi(tr_name, TR_SLIDE_TB) == 0)
+		tr_name = "slide_tb_transition";
 	else
 		tr_name = "fade_transition";
 
@@ -446,7 +448,17 @@ void text_ss_update(void *data, obs_data_t *settings,
 	text_ss->hide = obs_data_get_bool(settings, S_HIDE);
 
 	if (!text_ss->tr_name || strcmp(tr_name, text_ss->tr_name) != 0)
-		new_tr = obs_source_create_private(tr_name, NULL, NULL);
+	{
+		if (strcmp(tr_name, "slide_tb_transition") == 0) {
+			auto slide_settings = obs_data_create();
+			obs_data_set_string(slide_settings, "direction", "up");
+			new_tr = obs_source_create_private(
+				"slide_transition", nullptr, slide_settings);
+		} else {
+			new_tr = obs_source_create_private(
+				tr_name, nullptr, nullptr);
+		}
+	}
 
 	new_duration = (uint32_t)obs_data_get_int(settings, S_SLIDE_TIME);
 	new_speed = (uint32_t)obs_data_get_int(settings, S_TR_SPEED);
@@ -1037,6 +1049,7 @@ void ss_properites(void *data, obs_properties_t *props)
 	obs_property_list_add_string(p, T_TR_FADE, TR_FADE);
 	obs_property_list_add_string(p, T_TR_SWIPE, TR_SWIPE);
 	obs_property_list_add_string(p, T_TR_SLIDE, TR_SLIDE);
+	obs_property_list_add_string(p, T_TR_SLIDE_TB, TR_SLIDE_TB);
 
 	p = obs_properties_add_int(props, S_SLIDE_TIME, T_SLIDE_TIME, 50,
 				   3600000, 50);
